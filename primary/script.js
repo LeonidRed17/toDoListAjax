@@ -1,33 +1,68 @@
+
 let tabButtons = document.querySelectorAll('.tab_button'); //Массив с кнопками табов
+let objectiveNameInput = document.getElementById('objectives_name_input'); //Инпут с названием задачи 
+let objectiveDescriptionInput = document.getElementById('objectives_description_input'); //Инпут с описанием задачи
+let objectivesSubmitButton = document.getElementById('objectives_submit'); //Кнопка отправки
 let selectButtons = document.querySelectorAll('.objectives_select'); //Кнопки выборки - изначально скрыты.
 let selectButtonsWrapper = document.querySelectorAll('.select_wrapper'); //Кнопки выборки - изначально скрыты.
-//Для каждой кнопки присвоить событие которе изменяет класс кнопки таба, оформление.
-tabButtons.forEach(function (tab_Button) {
-    tab_Button.addEventListener('click', function () {
-        tabButtons.forEach(function (tab_Button) {
-            tab_Button.classList.remove('active_block'); //Для каждой кнопки убрать активный класс
-        })
-        tab_Button.classList.add('active_block'); //Для кнопки на которую нажали добавить активный класс
-        modeChange(tab_Button.id); //Вызов функции изменения режима программы, в функцию передается аргумент - id нажатой кнопки с целью установки требуемого режима.
-    })
-})
-//Функция изменяющая режим работы программы: внесение задач, изменение или удаление. 
-function modeChange(mode_button) {
-    if (mode_button == "add_button") {
-        console.log('add_button!');
-    } else if (mode_button == "edit_button") {
-        console.log('edit_button!');
-        selectButtonsWrapper.forEach(function(selectButton){
-            selectButton.classList.add('select_visible');
-            cosole.log('test');
-            cosole.log('test23');
-        })
 
-    } else if (mode_button == "delete_button") {
-        console.log('delete_button!');
-    }
+addMode(); //Начальный режим - добавление
+//Функция изменяющая режим работы программы: внесение задач, изменение или удаление. 
+(function modeChangeController() {
+    //Функция которая каждой кнопке присваивает событие при возникновении которого изменяется класс кнопки и соответственно её оформление.
+    //Параметр tab_button - каждая кнопка таба
+    tabButtons.forEach(function (tab_Button) {
+        tab_Button.addEventListener('click', function () {
+            tabButtons.forEach(function (tab_Button) {
+                tab_Button.classList.remove('active_block'); //Для всех кнопок убрать активный класс
+            });
+            tab_Button.classList.add('active_block'); //Для кнопки на которую нажали добавить активный класс
+
+            //В зависимости от нажатой кнопки переключить режим работы программы; id кнопки соответствует режиму.
+            if (tab_Button.id == "add_button") {
+                addMode();
+            } else if (tab_Button.id == "edit_button") {
+                editMode();
+
+            } else if (tab_Button.id == "delete_button") {
+                deleteMode();
+            }
+        });
+    });
+})();
+
+//Режим добавление задач
+function addMode() {
+    console.log('add_button!');
+    console.log(objectiveNameInput.value);
 }
 
+//Режим изменения задачи
+function editMode() {
+    console.log('edit_button!');
+    selectButtonsWrapper.forEach(function (selectButton) {
+        selectButton.classList.add('select_visible');
+    })
+}
+//Режим удаления задачи
+function deleteMode() {
+    console.log('delete_button!');
+}
+
+//Функция ответственная за асинхронный обмен данными с сервером
+function ajax(data) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "c_primary.php");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = () => {
+        if (xhr.status == 200) {
+            console.log(xhr.statusText);
+        } else {
+            console.log('Server response'.xhr.statusText);
+        }
+    }
+    xhr.send(data);
+}
 
 /*
 //Класс ответственный за элементы таба, в нем описаны основные общие характеристики элементов таба.
