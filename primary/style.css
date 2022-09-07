@@ -1,0 +1,156 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/*Блок контента*/
+
+.content {
+    margin: 0 auto;
+    max-width: 1368px;
+    min-width: 600px;
+}
+
+.wrapper {
+    margin: 0 auto;
+    width: 900px;
+}
+
+
+/*Текст содержимого таблицы*/
+
+.data_description {
+    float: left;
+    margin-left: 0px;
+    margin-top: 50px;
+    font-size: 50px;
+    font-weight: lighter;
+    color: rgb(53, 16, 156);
+}
+
+
+/*Очистка обтекания*/
+
+.clearfix {
+    clear: both;
+}
+
+
+/*Обертка таблицы*/
+
+.objectives_table_wrapper {
+    background: #f8f8f8;
+    border: 3px solid rgb(53, 16, 156);
+    float: left;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+
+/*Таблица*/
+
+.objectives_table_wrapper table {
+    width: 600px;
+}
+
+.objectives_table_wrapper table tr td {
+    border: 1px solid black;
+    padding: 1px;
+}
+
+.select_wrapper {
+    display: none;
+}
+
+
+/*Форма*/
+
+.block_option {
+    width: 250px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 0px;
+}
+
+.tab_button {
+    float: left;
+    width: 33%;
+    height: 30px;
+    text-align: center;
+    line-height: 31px;
+    cursor: pointer;
+    border:0px;
+    background: rgb(63, 44, 110);
+    color:#929292;
+}
+
+#buttons_block input[type=radio] {
+    display: none;
+}
+
+.form_radio_btn label {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0px 15px;
+    line-height: 34px;
+    border: 1px solid #999;
+    border-radius: 6px;
+    user-select: none;
+}
+
+#add_block.form_radio_btn input[type=radio] {
+    display: none;
+}
+
+.active_block {
+    background: rgb(72, 51, 127);
+    color: #fff;
+}
+
+#objectives_form {
+    width: 250px;
+    min-height: 90px;
+    background: rgb(72 51 127);
+    text-align: center;
+}
+
+
+/*Сайдбар*/
+
+#objectives_name_input {
+    width: 165px;
+    height: 25px;
+    border: 1px solid white;
+    border-radius: 4px;
+    margin-top: 15px;
+    padding: 1px;
+    background: white;
+}
+
+#objectives_description_input {
+    width: 165px;
+    height: 25px;
+    border: 1px solid white;
+    border-radius: 4px;
+    margin-top: 15px;
+    padding: 1px;
+    background: white;
+}
+
+#objectives_submit {
+    width: 120px;
+    height: 25px;
+    border: 1px solid black;
+    margin: 12px 0 10px 0;
+    background: white;
+    cursor: pointer;
+}
+/*Видимый и невидимый элемент*/
+.select_visible{
+    display:table-cell;
+}
+.select_invisible{
+    display:none;
+}
