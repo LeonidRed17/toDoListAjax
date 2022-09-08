@@ -60,11 +60,6 @@
     padding: 1px;
 }
 
-.select_wrapper {
-    display: none;
-}
-
-
 /*Форма*/
 
 .block_option {
@@ -148,9 +143,15 @@
     cursor: pointer;
 }
 /*Видимый и невидимый элемент*/
-.select_visible{
+.select_wrapper_visible{
     display:table-cell;
 }
-.select_invisible{
+.select_row_visible{
+    display:table-cell;
+}
+.select_visible{
+    display:inline-block;
+}
+.elem_invisible{
     display:none;
 }

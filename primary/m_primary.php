@@ -41,7 +41,7 @@ class DataBaseWork
         echo ("
         <table>
         <tr id='columns_description'>
-            <td class='select_wrapper'>Выбрать</td>
+            <td class='select_row elem_invisible'>Выбрать</td>
             <td>№</td>
             <td>Название задачи</td>
             <td>Описание задачи</td>
@@ -54,8 +54,8 @@ class DataBaseWork
                 $objective_description = $row['objective_description'];
                 echo ("
                 <tr>
-                    <td class='objective_select'>
-                        <input type='radio' name='select' form='objectives_form' id='$objective_id' class='objectives_select'>
+                    <td class='select_wrapper elem_invisible'>
+                        <input type='radio' name='select' form='objectives_form' id='$objective_id' class='objectives_select elem_invisible'>
                     </td>
                     <td>$indexNumber</td>
                     <td>$objective_name</td>
