@@ -51,6 +51,8 @@ function addMode() {
 
     //Определение данных для отправки
     data.mode = 'add';
+    
+    objectivesSubmitButton.value = 'Добавить';
 
     //Сделать невидимым название стоблца "выбрать"
     selectRow.classList.add('elem_invisible');
@@ -75,6 +77,7 @@ function editMode() {
     
     data.mode = 'edit';
     //Определение данных для отправки
+    objectivesSubmitButton.value = 'Изменить';
 
     //Сделать видимым название стоблца "выбрать"
     selectRow.classList.add('select_row_visible');
@@ -105,7 +108,7 @@ function editMode() {
 function deleteMode() {
     //Инфа которая передастся серверу
     data.mode = "delete"; //Режим удаления
-    
+    objectivesSubmitButton.value = 'Удалить';
     //Сделать видимым название стоблца "выбрать"
     selectRow.classList.add('select_row_visible');
     selectRow.classList.remove('elem_invisible');

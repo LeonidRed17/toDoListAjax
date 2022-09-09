@@ -30,7 +30,7 @@
                     <input type="text" name="objectives_name_input" id="objectives_name_input" placeholder="Название задачи">
                     <input type="text" name="objectives_description_input" id="objectives_description_input" placeholder="Описание задачи">
                     <div class="clearfix"></div>
-                    <input type="button" name="objectives_submit" id="objectives_submit" value="Отправить">
+                    <input type="button" name="objectives_submit" id="objectives_submit" value="Добавить">
                 </form>
             </div>
             <div class="clearfix"></div>
