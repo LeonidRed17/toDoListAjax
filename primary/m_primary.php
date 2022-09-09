@@ -24,7 +24,7 @@ class DataBaseWork
             echo "Ошибка: " . $connection->error;
         }
     }
-    public function delete_objective($connection, $objective_id,$value1, $value2)
+    public function delete_objective($connection, $objective_id)
     {
         $query = "DELETE FROM objectives WHERE objective_id = '$objective_id'";
         if ($connection->query($query)) {
@@ -42,9 +42,9 @@ class DataBaseWork
         <table>
         <tr id='columns_description'>
             <td class='select_row elem_invisible'>Выбрать</td>
-            <td>№</td>
-            <td>Название задачи</td>
-            <td>Описание задачи</td>
+            <td class='number_row'>№</td>
+            <td class='name_row'>Название задачи</td>
+            <td class='description_row'>Описание задачи</td>
         </tr>");
         if ($result = $connection->query($query)) {
             foreach ($result as $row) {

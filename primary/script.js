@@ -15,12 +15,11 @@ let data = {
 };
 
 addMode(); //Режим программы по умолчанию - добавление задач.
+objectivesSubmitButton.addEventListener('click',ajax);
 
 //Функция которая изменяет режим работы программы при нажатии на соотвутсвующую кнопку таба: внесение, изменение или удаление задач. 
 (function modeChangeController() {
-
     //Функция после которой при нажатии на кнопку меняется оформление таба.
-    //Параметр tab_button - каждая кнопка таба
     tabButtons.forEach(function (tab_Button) {
         tab_Button.addEventListener('click', function () {
             tabButtons.forEach(function (tab_Button) {
@@ -41,22 +40,29 @@ addMode(); //Режим программы по умолчанию - добав�
     });
 })();
 
+//Функция устанавливающая значения для отправки на сервер
+function setData(){
+    data.objectiveName = objectiveNameInput.value; //Текст введенный в поле именования задачи
+    data.objectiveDescription = objectiveDescriptionInput.value;//Текст введенный в поле описания задачи
+}
+
 //Режим добавление задач
 function addMode() {
-    data.mode = "add"; //Режим удаления
-    data.objectiveName = objectiveNameInput.value; //Текст введенный в поле названия задачи
-    data.objectiveDescription = objectiveDescriptionInput.value;//Текст введенный в поле описания задачи
 
-    //Сделать видимым название стоблца "выбрать"
+    //Определение данных для отправки
+    data.mode = 'add';
+
+    //Сделать невидимым название стоблца "выбрать"
     selectRow.classList.add('elem_invisible');
     selectRow.classList.remove('select_row_visible');
 
-    //Все обертки селекта сделать видимыми
+    //Все обертки селекта сделать невидимыми
     selectButtonsWrapper.forEach(function (selectButtonWrapper) {
         selectButtonWrapper.classList.remove('select_wrapper_visible');
         selectButtonWrapper.classList.add('elem_invisible');
     })
-    //Все селекты сделать видимыми
+
+    //Все селекты сделать невидимыми
     selectButtons.forEach(function (selectButton) {
         selectButton.classList.remove('select_visible');
         selectButton.classList.add('elem_invisible');
@@ -66,11 +72,9 @@ function addMode() {
 
 //Режим изменения задачи
 function editMode() {
-
-    //Инфа которая передастся серверу
-    data.mode = "edit"; //Режим редактирования
-    data.objectiveName = objectiveNameInput.value; //Текст введенный в поле названия задачи
-    data.objectiveDescription = objectiveDescriptionInput.value;//Текст введенный в поле описания задачи
+    
+    data.mode = 'edit';
+    //Определение данных для отправки
 
     //Сделать видимым название стоблца "выбрать"
     selectRow.classList.add('select_row_visible');
@@ -81,20 +85,27 @@ function editMode() {
         selectButtonWrapper.classList.remove('elem_invisible');
         selectButtonWrapper.classList.add('select_wrapper_visible');
     })
+
     //Все селекты сделать видимыми
     selectButtons.forEach(function (selectButton) {
         selectButton.classList.remove('elem_invisible');
         selectButton.classList.add('select_visible');
     })
+
+    //При нажатии на любую кнопку селект вызывать функцию которая определит id селекта и отправит его в data 
+    selectButtons.forEach(function(select){
+        select.addEventListener('click',function(){
+           data.selectedId = select.id;
+        });
+    })
     console.log(data);
 }
+
 //Режим удаления задачи
 function deleteMode() {
     //Инфа которая передастся серверу
     data.mode = "delete"; //Режим удаления
-    data.objectiveName = objectiveNameInput.value; //Текст введенный в поле названия задачи
-    data.objectiveDescription = objectiveDescriptionInput.value;//Текст введенный в поле описания задачи
-
+    
     //Сделать видимым название стоблца "выбрать"
     selectRow.classList.add('select_row_visible');
     selectRow.classList.remove('elem_invisible');
@@ -104,27 +115,49 @@ function deleteMode() {
         selectButtonWrapper.classList.remove('elem_invisible');
         selectButtonWrapper.classList.add('select_wrapper_visible');
     })
+
     //Все селекты сделать видимыми
     selectButtons.forEach(function (selectButton) {
         selectButton.classList.remove('elem_invisible');
         selectButton.classList.add('select_visible');
+    })
+
+    //При нажатии на любую кнопку селект вызывать функцию которая определит id селекта и отправит его в data 
+    selectButtons.forEach(function(select){
+        select.addEventListener('click',function(){
+            data.selectedId = select.id;
+        });
     })
     console.log(data);
 }
 
 //Функция ответственная за асинхронный обмен данными с сервером
-function ajax(data) {
+function ajax() {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "c_primary.php");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = () => {
         if (xhr.status == 200) {
-            console.log(xhr.statusText);
+            //console.log(JSON.parse(xhr.responseText));
+            console.log((xhr.responseText));
+
         } else {
             console.log('Server response'.xhr.statusText);
         }
     }
+
+    setData();
+    
+    //console.log(data);
+    data = JSON.stringify(data);
     xhr.send(data);
+    
+    //Выставялем объект по умолчанию
+    data.objectiveDescription = '';
+    data.objectiveName = '';
+    data.selectedId = '';
+    data.mode = '';
+
 }
 
 /*

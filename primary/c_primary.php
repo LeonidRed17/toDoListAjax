@@ -6,21 +6,22 @@ $connection = new mysqli($host, $user, $password, $database);
 $json = file_get_contents('PHP://input');
 $obj = json_decode($json);
 //var_dump($obj);
+echo(print_r($obj));
 
 $dataBaseWork = new DataBaseWork(); //Инициализация класса ответственного за работу с базой данных
 
 if (isset($obj)) {
-    if ($obj->addMode === 'true') {
-        $dataBaseWork->add_objective($connection, $dataBaseWork->clean($obj->objectiveNameInputValue),  $dataBaseWork->clean($obj->objectiveDescriptionInputValue));
-    } else if ($obj->editMode === 'true') {
-        $dataBaseWork->edit_objective($connection,  $dataBaseWork->clean($obj->selectedId),  $dataBaseWork->clean($obj->objectiveNameInputValue),  $dataBaseWork->clean($obj->objectiveDescriptionInputValue));
+    if ($obj->mode === 'add') {
+        $dataBaseWork->add_objective($connection, $dataBaseWork->clean($obj->objectiveName),  $dataBaseWork->clean($obj->objectiveDescription));
+    } else if ($obj->mode === 'edit') {
+        $dataBaseWork->edit_objective($connection,  $dataBaseWork->clean($obj->selectedId),  $dataBaseWork->clean($obj->objectiveName),  $dataBaseWork->clean($obj->objectiveDescription));
+    } else if ($obj->mode === 'delete') {
+        $dataBaseWork->delete_objective($connection,  $dataBaseWork->clean($obj->selectedId));
     }
 }
 require_once('v_primary.php');
 
 ?>
-
-
 <!--
 //Запрашиваем файл с классами и функциями.
 require_once('m_primary.php');

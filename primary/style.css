@@ -59,6 +59,12 @@
     border: 1px solid black;
     padding: 1px;
 }
+.select_row{
+    width:60px;
+}
+.select_wrapper{
+    text-align:center;
+}
 
 /*Форма*/
 
@@ -142,6 +148,7 @@
     background: white;
     cursor: pointer;
 }
+
 /*Видимый и невидимый элемент*/
 .select_wrapper_visible{
     display:table-cell;
