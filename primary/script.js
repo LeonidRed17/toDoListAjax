@@ -7,7 +7,8 @@ let selectButtons = document.querySelectorAll('.objectives_select'); //Кноп�
 let selectRow = document.querySelector('.select_row'); //Описание столбца "выбрать"
 
 //Пересылаемые данные на сервер через Ajax
-let data = {
+var data = {
+    ajax: "",
     mode: "",
     selectedId: "",
     objectiveName: "",
@@ -15,7 +16,7 @@ let data = {
 };
 
 addMode(); //Режим программы по умолчанию - добавление задач.
-objectivesSubmitButton.addEventListener('click',ajax);
+objectivesSubmitButton.addEventListener('click', ajax_send);
 
 //Функция которая изменяет режим работы программы при нажатии на соотвутсвующую кнопку таба: внесение, изменение или удаление задач. 
 (function modeChangeController() {
@@ -40,20 +41,15 @@ objectivesSubmitButton.addEventListener('click',ajax);
     });
 })();
 
-//Функция устанавливающая значения для отправки на сервер
-function setData(){
-    data.objectiveName = objectiveNameInput.value; //Текст введенный в поле именования задачи
-    data.objectiveDescription = objectiveDescriptionInput.value;//Текст введенный в поле описания задачи
-}
-
 //Режим добавление задач
 function addMode() {
 
     //Определение данных для отправки
     data.mode = 'add';
-    
+
     objectivesSubmitButton.value = 'Добавить';
 
+    /*
     //Сделать невидимым название стоблца "выбрать"
     selectRow.classList.add('elem_invisible');
     selectRow.classList.remove('select_row_visible');
@@ -70,11 +66,12 @@ function addMode() {
         selectButton.classList.add('elem_invisible');
     })
     console.log(data);
+    */
 }
 
 //Режим изменения задачи
 function editMode() {
-    
+
     data.mode = 'edit';
     //Определение данных для отправки
     objectivesSubmitButton.value = 'Изменить';
@@ -96,9 +93,9 @@ function editMode() {
     })
 
     //При нажатии на любую кнопку селект вызывать функцию которая определит id селекта и отправит его в data 
-    selectButtons.forEach(function(select){
-        select.addEventListener('click',function(){
-           data.selectedId = select.id;
+    selectButtons.forEach(function (select) {
+        select.addEventListener('click', function () {
+            data.selectedId = select.id;
         });
     })
     console.log(data);
@@ -126,8 +123,8 @@ function deleteMode() {
     })
 
     //При нажатии на любую кнопку селект вызывать функцию которая определит id селекта и отправит его в data 
-    selectButtons.forEach(function(select){
-        select.addEventListener('click',function(){
+    selectButtons.forEach(function (select) {
+        select.addEventListener('click', function () {
             data.selectedId = select.id;
         });
     })
@@ -135,7 +132,10 @@ function deleteMode() {
 }
 
 //Функция ответственная за асинхронный обмен данными с сервером
-function ajax() {
+function ajax_send() {
+    console.log(data.ajax);
+    data.ajax = 'send';
+    console.log(data);
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "c_primary.php");
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -143,24 +143,86 @@ function ajax() {
         if (xhr.status == 200) {
             //console.log(JSON.parse(xhr.responseText));
             console.log((xhr.responseText));
-
+            ajax_get();
         } else {
             console.log('Server response'.xhr.statusText);
         }
     }
 
-    setData();
-    
+    data.objectiveName = objectiveNameInput.value; //Текст введенный в поле именования задачи
+    data.objectiveDescription = objectiveDescriptionInput.value;//Текст введенный в поле описания задачи
+
     //console.log(data);
-    data = JSON.stringify(data);
-    xhr.send(data);
-    
+    console.log(data);
+
+    let sendData = JSON.stringify(data);
+    xhr.send(sendData);
+    console.log(sendData);
     //Выставялем объект по умолчанию
+    /*
     data.objectiveDescription = '';
     data.objectiveName = '';
     data.selectedId = '';
     data.mode = '';
+    data.ajax = '';
+    */
 
+
+}
+function ajax_get() {
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "c_primary.php");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = () => {
+        if (xhr.status == 200) {
+            console.log(xhr.responseText);
+            let jsonData = JSON.parse(xhr.responseText);
+            showObjectives(jsonData);
+        } else {
+            console.log('Server response'.xhr.statusText);
+        }
+    }
+    data.ajax = "get";
+    console.log(data);
+    let sendData = JSON.stringify(data);
+    console.log(data);
+    xhr.send(sendData);
+    /*data.objectiveDescription = '';
+    data.objectiveName = '';
+    data.selectedId = '';
+    data.mode = '';
+    data.ajax = '';
+    */
+};
+
+ajax_get()
+
+let upload = 0; //Число дозагрузок задач
+//Функция обрабатывающая массив данных и выводящая их на страницу 
+function showObjectives(data) {
+    let objectivesTbody = document.querySelector('.objectives_tbody');
+
+    //Если использовалась дозагрузка то добавить в таблицу только последнюю задачу
+    if (upload === 1) {
+        let htmlElemTr = document.createElement('tr');
+        let j = data.length //Номер записи на странице - последняя записи
+        console.log(data);
+        htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${data[data.length - 1][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${data[data.length - 1][1]}</td><td>${data[data.length - 1][2]}</td></tr>`;
+        htmlElemTr.innerHTML = htmlElemTrInnerHTML;
+        objectivesTbody.appendChild(htmlElemTr);
+    } else {
+        for (let i = 0; i < data.length; i++) {
+            let htmlElemTr = document.createElement('tr');
+            let j = i + 1 //Номер записи на странице
+            htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${data[i][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${data[i][1]}</td><td>${data[i][2]}</td></tr>`;
+            htmlElemTr.innerHTML = htmlElemTrInnerHTML;
+            objectivesTbody.appendChild(htmlElemTr);
+            console.log(upload);
+            upload = 1;
+        }
+    }
+
+    // objectivesTbody.appendChild(data);
 }
 
 /*

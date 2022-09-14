@@ -16,9 +16,16 @@
             <h1 class="data_description">Список задач</h1>
             <div class="clearfix"></div>
             <div class="objectives_table_wrapper">
-                <?php
-                $dataBaseWork->show_objectives($connection);
-                ?>
+                <table>
+                    <tbody class ="objectives_tbody">
+                        <tr id='columns_description'>
+                            <td class='select_row elem_invisible'>Выбрать</td>
+                            <td class='number_row'>№</td>
+                            <td class='name_row'>Название задачи</td>
+                            <td class='description_row'>Описание задачи</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="block_option">
                 <form id="objectives_form" method="POST" name="objectives_form">

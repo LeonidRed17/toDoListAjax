@@ -14,11 +14,11 @@ class DataBaseWork
             echo "Ошибка: " . $connection->error;
         }
     }
-    public function edit_objective($connection, $objective_id,$value1, $value2)
+    public function edit_objective($connection, $objective_id, $value1, $value2)
     {
         $query = "UPDATE objectives SET objective_name = '$value1', objective_description = '$value2' WHERE objective_id = '$objective_id'";
         if ($connection->query($query)) {
-            echo($objective_id);
+            echo ($objective_id);
             echo "Данные успешно обновлены";
         } else {
             echo "Ошибка: " . $connection->error;
@@ -33,7 +33,7 @@ class DataBaseWork
             echo "Ошибка: " . $connection->error;
         }
     }
-    
+
     public function show_objectives($connection)
     {
         $query = "SELECT * FROM objectives";
@@ -66,7 +66,24 @@ class DataBaseWork
         } else {
             echo "Ошибка: " . $connection->error;
         }
-        echo('</table>');
+        echo ('</table>');
+    }
+    public function send_objectives_json($connection)
+    {
+        $query = "SELECT * FROM objectives";
+        $jsonSend = [];
+        if ($result = $connection->query($query)) {
+            foreach ($result as $row) {
+                $objective_id = $row['objective_id'];
+                $objective_name = $row['objective_name'];
+                $objective_description = $row['objective_description'];
+                array_push($jsonSend, [$objective_id, $objective_name, $objective_description]);
+            }
+            $jsonSend = json_encode($jsonSend, JSON_UNESCAPED_UNICODE);
+            echo ($jsonSend);
+        } else {
+            echo "Ошибка: " . $connection->error;
+        }
     }
     public function clean($value)
     {
