@@ -164,17 +164,8 @@ function ajax_send() {
     let sendData = JSON.stringify(data);
     xhr.send(sendData);
     console.log(sendData);
-    //Выставялем объект по умолчанию
-    /*
-    data.objectiveDescription = '';
-    data.objectiveName = '';
-    data.selectedId = '';
-    data.mode = '';
-    data.ajax = '';
-    */
-
-
 }
+
 function ajax_get() {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "c_primary.php");
@@ -205,28 +196,59 @@ ajax_get()
 
 let upload = 0; //Число дозагрузок задач
 //Функция обрабатывающая массив данных и выводящая их на страницу 
-function showObjectives(data) {
+function showObjectives(jsonData) {
     let objectivesTbody = document.querySelector('.objectives_tbody');
-
-    //Если использовалась дозагрузка то добавить в таблицу только последнюю задачу
-    if (upload === 1) {
-        let htmlElemTr = document.createElement('tr');
-        let j = data.length //Номер записи на странице - последняя записи
-        console.log(data);
-        htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${data[data.length - 1][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${data[data.length - 1][1]}</td><td>${data[data.length - 1][2]}</td></tr>`;
-        htmlElemTr.innerHTML = htmlElemTrInnerHTML;
-        objectivesTbody.appendChild(htmlElemTr);
-    } else {
-        for (let i = 0; i < data.length; i++) {
+    console.log('showobjectives');
+    console.log(data);
+    if (data.mode === 'add') {
+        console.log('data.mode === add');
+        //Если нужно добавить в таблицу только последнюю задачу
+        if (upload === 1) {
+            let htmlElemTr = document.createElement('tr');
+            let j = jsonData.length //Номер записи на странице - последняя записи
+            console.log(jsonData);
+            htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${jsonData[jsonData.length - 1][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${jsonData[jsonData.length - 1][1]}</td><td>${jsonData[jsonData.length - 1][2]}</td></tr>`;
+            htmlElemTr.innerHTML = htmlElemTrInnerHTML;
+            objectivesTbody.appendChild(htmlElemTr);
+        }
+        else {
+            for (let i = 0; i < jsonData.length; i++) {
+                let htmlElemTr = document.createElement('tr');
+                let j = i + 1 //Номер записи на странице
+                htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${jsonData[i][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${jsonData[i][1]}</td><td>${jsonData[i][2]}</td></tr>`;
+                htmlElemTr.innerHTML = htmlElemTrInnerHTML;
+                objectivesTbody.appendChild(htmlElemTr);
+                console.log(upload);
+                upload = 1;
+            }
+        }
+    } else if(data.mode === 'edit') {
+        objectivesTbody.innerHTML = "<tr id='columns_description'><td class='select_row elem_invisible'>Выбрать</td><td class='number_row'>№</td><td class='name_row'>Название задачи</td><td class='description_row'>Описание задачи</td></tr>";
+        for (let i = 0; i < jsonData.length; i++) {
             let htmlElemTr = document.createElement('tr');
             let j = i + 1 //Номер записи на странице
-            htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${data[i][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${data[i][1]}</td><td>${data[i][2]}</td></tr>`;
+            htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${jsonData[i][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${jsonData[i][1]}</td><td>${jsonData[i][2]}</td></tr>`;
             htmlElemTr.innerHTML = htmlElemTrInnerHTML;
             objectivesTbody.appendChild(htmlElemTr);
             console.log(upload);
             upload = 1;
+            editMode();
+        }
+
+    } else if(data.mode === 'delete') {
+        objectivesTbody.innerHTML = "<tr id='columns_description'><td class='select_row elem_invisible'>Выбрать</td><td class='number_row'>№</td><td class='name_row'>Название задачи</td><td class='description_row'>Описание задачи</td></tr>";
+        for (let i = 0; i < jsonData.length; i++) {
+            let htmlElemTr = document.createElement('tr');
+            let j = i + 1 //Номер записи на странице
+            htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${jsonData[i][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${jsonData[i][1]}</td><td>${jsonData[i][2]}</td></tr>`;
+            htmlElemTr.innerHTML = htmlElemTrInnerHTML;
+            objectivesTbody.appendChild(htmlElemTr);
+            console.log(upload);
+            upload = 1;
+            deleteMode();
         }
     }
+
 
     // objectivesTbody.appendChild(data);
 }
