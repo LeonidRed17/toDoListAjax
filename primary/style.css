@@ -59,11 +59,13 @@
     border: 1px solid black;
     padding: 1px;
 }
-.select_row{
-    width:60px;
+
+.select_row {
+    width: 60px;
 }
-.select_wrapper{
-    text-align:center;
+
+.select_wrapper {
+    text-align: center;
 }
 
 /*Форма*/
@@ -82,9 +84,9 @@
     text-align: center;
     line-height: 31px;
     cursor: pointer;
-    border:0px;
+    border: 0px;
     background: rgb(63, 44, 110);
-    color:#929292;
+    color: #929292;
 }
 
 #buttons_block input[type=radio] {
@@ -150,15 +152,20 @@
 }
 
 /*Видимый и невидимый элемент*/
-.select_wrapper_visible{
-    display:table-cell;
+.select_wrapper_visible {
+    display: table-cell;
 }
-.select_row_visible{
-    display:table-cell;
+
+.select_row_visible {
+    display: table-cell;
 }
-.select_visible{
-    display:inline-block;
+
+.select_visible {
+    display: inline-block;
 }
-.elem_invisible{
-    display:none;
+
+.elem_invisible {
+    display: none;
 }
+
+

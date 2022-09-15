@@ -2,11 +2,9 @@ let tabButtons = document.querySelectorAll('.tab_button'); //Массив с к�
 let objectiveNameInput = document.getElementById('objectives_name_input'); //Инпут с названием задачи 
 let objectiveDescriptionInput = document.getElementById('objectives_description_input'); //Инпут с описанием задачи
 let objectivesSubmitButton = document.getElementById('objectives_submit'); //Кнопка отправки
-let selectRow = document.querySelector('.select_row'); //Описание столбца "выбрать"
-console.log(selectRow);
 
 //Пересылаемые данные на сервер через Ajax
-var data = {
+let data = {
     ajax: "",
     mode: "",
     selectedId: "",
@@ -45,6 +43,7 @@ function addMode() {
 
     //Определение данных для отправки
     data.mode = 'add';
+    let selectRow = document.querySelector('.select_row'); //Описание столбца "выбрать"
 
     objectivesSubmitButton.value = 'Добавить';
 
@@ -53,8 +52,11 @@ function addMode() {
 
 
     //Сделать невидимым название стоблца "выбрать"
-    selectRow.classList.add('elem_invisible');
+
     selectRow.classList.remove('select_row_visible');
+    selectRow.classList.add('elem_invisible');
+    console.log("Невидимый селект роу")
+    console.log(selectRow);
 
     //Все обертки селекта сделать невидимыми
     selectButtonsWrapper.forEach(function (selectButtonWrapper) {
@@ -73,6 +75,7 @@ function addMode() {
 
 //Режим изменения задачи
 function editMode() {
+    let selectRow = document.querySelector('.select_row'); //Описание столбца "выбрать"
 
     data.mode = 'edit';
     //Определение данных для отправки
@@ -107,6 +110,8 @@ function editMode() {
 
 //Режим удаления задачи
 function deleteMode() {
+    let selectRow = document.querySelector('.select_row'); //Описание столбца "выбрать"
+
     //Инфа которая передастся серверу
     data.mode = "delete"; //Режим удаления
     objectivesSubmitButton.value = 'Удалить';
@@ -184,12 +189,6 @@ function ajax_get() {
     let sendData = JSON.stringify(data);
     console.log(data);
     xhr.send(sendData);
-    /*data.objectiveDescription = '';
-    data.objectiveName = '';
-    data.selectedId = '';
-    data.mode = '';
-    data.ajax = '';
-    */
 };
 
 ajax_get()
@@ -202,6 +201,7 @@ function showObjectives(jsonData) {
     console.log(data);
     if (data.mode === 'add') {
         console.log('data.mode === add');
+        addMode();
         //Если нужно добавить в таблицу только последнюю задачу
         if (upload === 1) {
             let htmlElemTr = document.createElement('tr');
@@ -219,24 +219,12 @@ function showObjectives(jsonData) {
                 htmlElemTr.innerHTML = htmlElemTrInnerHTML;
                 objectivesTbody.appendChild(htmlElemTr);
                 console.log(upload);
-                upload = 1;
             }
-        }
-    } else if(data.mode === 'edit') {
-        objectivesTbody.innerHTML = "<tr id='columns_description'><td class='select_row elem_invisible'>Выбрать</td><td class='number_row'>№</td><td class='name_row'>Название задачи</td><td class='description_row'>Описание задачи</td></tr>";
-        for (let i = 0; i < jsonData.length; i++) {
-            let htmlElemTr = document.createElement('tr');
-            let j = i + 1 //Номер записи на странице
-            htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${jsonData[i][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${jsonData[i][1]}</td><td>${jsonData[i][2]}</td></tr>`;
-            htmlElemTr.innerHTML = htmlElemTrInnerHTML;
-            objectivesTbody.appendChild(htmlElemTr);
-            console.log(upload);
             upload = 1;
-            editMode();
-        }
 
-    } else if(data.mode === 'delete') {
-        objectivesTbody.innerHTML = "<tr id='columns_description'><td class='select_row elem_invisible'>Выбрать</td><td class='number_row'>№</td><td class='name_row'>Название задачи</td><td class='description_row'>Описание задачи</td></tr>";
+        }
+    } else if (data.mode === 'edit') {
+        objectivesTbody.innerHTML = "<tr id='columns_description'><td class=select_row elem_invisible'>Выбрать</td><td class='number_row'>№</td><td class='name_row'>Название задачи</td><td class='description_row'>Описание задачи</td></tr>";
         for (let i = 0; i < jsonData.length; i++) {
             let htmlElemTr = document.createElement('tr');
             let j = i + 1 //Номер записи на странице
@@ -244,11 +232,23 @@ function showObjectives(jsonData) {
             htmlElemTr.innerHTML = htmlElemTrInnerHTML;
             objectivesTbody.appendChild(htmlElemTr);
             console.log(upload);
-            upload = 1;
-            deleteMode();
         }
+        upload = 1;
+        editMode();
+
+
+    } else if (data.mode === 'delete') {
+        objectivesTbody.innerHTML = "<tr id='columns_description'><td class='select_row select_row_visible'>Выбрать</td><td class='number_row'>№</td><td class='name_row'>Название задачи</td><td class='description_row'>Описание задачи</td></tr>";
+        for (let i = 0; i < jsonData.length; i++) {
+            let htmlElemTr = document.createElement('tr');
+            let j = i + 1 //Номер записи на странице
+            htmlElemTrInnerHTML = `<tr><td class='select_wrapper elem_invisible'><input type='radio' name='select' form='objectives_form' id=${jsonData[i][0]} class='objectives_select elem_invisible'></td><td>${j}</td><td>${jsonData[i][1]}</td><td>${jsonData[i][2]}</td></tr>`;
+            htmlElemTr.innerHTML = htmlElemTrInnerHTML;
+            objectivesTbody.appendChild(htmlElemTr);
+            console.log(upload);
+        }
+        upload = 1;
+        deleteMode();
+
     }
-
-
-    // objectivesTbody.appendChild(data);
 }
