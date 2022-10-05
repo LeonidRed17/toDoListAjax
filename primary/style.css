@@ -4,26 +4,22 @@
     box-sizing: border-box;
 }
 
-
 /*Блок контента*/
 
 .content {
     margin: 0 auto;
     max-width: 1368px;
-    min-width: 600px;
 }
 
 .wrapper {
     margin: 0 auto;
-    width: 900px;
+    max-width: 900px;
 }
-
 
 /*Текст содержимого таблицы*/
 
 .data_description {
     float: left;
-    margin-left: 0px;
     margin-top: 50px;
     font-size: 50px;
     font-weight: lighter;
@@ -45,46 +41,67 @@
     border: 3px solid rgb(53, 16, 156);
     float: left;
     height: 300px;
+    max-width: 600px;
     overflow-y: scroll;
 }
 
 
+.objectives_tbody {
+    width: 100%;
+}
+
 /*Таблица*/
 
 .objectives_table_wrapper table {
-    width: 600px;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.objectives_table_wrapper table tr {
+    text-align: center;
 }
 
 .objectives_table_wrapper table tr td {
     border: 1px solid black;
     padding: 1px;
+    word-wrap:break-word;
 }
 
 .select_row {
-    width: 60px;
+    width: 14%;
 }
 
 .select_wrapper {
     text-align: center;
 }
 
+#columns_description {
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    color: rgb(72 50 129);
+    font-size: 18px;
+}
+
+.number_row {
+    width: 40px;
+}
+
 /*Форма*/
 
 .block_option {
-    width: 250px;
+    max-width: 250px;
     float: left;
     margin-left: 10px;
-    margin-top: 0px;
 }
 
 .tab_button {
     float: left;
     width: 33%;
     height: 30px;
-    text-align: center;
-    line-height: 31px;
-    cursor: pointer;
     border: 0px;
+    text-align: center;
+    cursor: pointer;
     background: rgb(63, 44, 110);
     color: #929292;
 }
@@ -113,7 +130,6 @@
 }
 
 #objectives_form {
-    width: 250px;
     min-height: 90px;
     background: rgb(72 51 127);
     text-align: center;
@@ -122,18 +138,8 @@
 
 /*Сайдбар*/
 
-#objectives_name_input {
-    width: 165px;
-    height: 25px;
-    border: 1px solid white;
-    border-radius: 4px;
-    margin-top: 15px;
-    padding: 1px;
-    background: white;
-}
-
-#objectives_description_input {
-    width: 165px;
+.objectives_input {
+    max-width: 165px;
     height: 25px;
     border: 1px solid white;
     border-radius: 4px;
@@ -168,4 +174,24 @@
     display: none;
 }
 
+
+/*Адаптив*/
+@media (max-device-width: 900px) {
+    .data_description{
+        margin-top:0px;
+    }
+    .block_option {
+        float: none;
+        max-width: 600px;
+        margin-left: 10px;
+        margin: 0 auto;
+    }
+    .objectives_table_wrapper {
+        background: #f8f8f8;
+        float: none;
+        margin: 5px auto 0 auto;
+        max-width: 600px;
+        overflow-y: scroll;
+    }
+}
 
