@@ -11,7 +11,7 @@ let data = {
     objectiveName: "",
     objectiveDescription: "",
 };
-
+console.log('lol');
 addMode(); //Режим программы по умолчанию - добавление задач.
 objectivesSubmitButton.addEventListener('click', ajax_send);
 
